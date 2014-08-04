@@ -78,13 +78,22 @@ nsprefixes = {
     'dcterms':  'http://purl.org/dc/terms/'}
 
 
-def opendocx(file):
+def opendocx(file,fileType='body'):
+    # Opens the corresponding xml file. Default file is document.xml
+    # such that this function is backwards compatible with earlier
+    # versions of the code when fileType wasn't specified
+
     '''Open a docx file, return a document XML tree'''
     mydoc = zipfile.ZipFile(file)
-    xmlcontent = mydoc.read('word/document.xml')
+    if   fileType == 'hdr1' : xmlcontent = mydoc.read('word/header1.xml')
+    elif fileType == 'hdr2' : xmlcontent = mydoc.read('word/header2.xml')
+    elif fileType == 'hdr3' : xmlcontent = mydoc.read('word/header3.xml')
+    elif fileType == 'body' : xmlcontent = mydoc.read('word/document.xml')
+    elif fileType == 'ftr1' : xmlcontent = mydoc.read('word/footer1.xml')
+    elif fileType == 'ftr2' : xmlcontent = mydoc.read('word/footer2.xml')
+    elif fileType == 'ftr3' : xmlcontent = mydoc.read('word/footer3.xml')
     document = etree.fromstring(xmlcontent)
     return document
-
 
 def newdocument():
     document = makeelement('document')
