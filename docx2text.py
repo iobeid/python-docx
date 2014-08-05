@@ -2,7 +2,7 @@
 
 # DOCX2TEXT.PY
 #
-#   Iyad Obeid, 8/4/2014, v1.0.0
+#   Iyad Obeid, 8/4/2014, v1.0.1
 #
 #   Converts docx to text
 #   Run with -h or -help flag for more information on how to run
@@ -37,11 +37,13 @@ def main():
     # check all the input switches in order to set up process flow properly
     for i in range( 1 , len(sys.argv) ):
 
-        if sys.argv[i].lower() == '-header' :
+        if (sys.argv[i].lower() == '-header') or \
+                (sys.argv[i].lower() == '-hdr') :
             headerFlag = True
             nArguments -= 1
 
-        elif sys.argv[i].lower() == '-footer' :
+        elif (sys.argv[i].lower() == '-footer') or \
+                (sys.argv[i].lower() == '-ftr') :
             footerFlag = True
             nArguments -= 1
 
@@ -125,7 +127,8 @@ def main():
         print(' ')
         print('DOCX2TEXT.py : coverts an MS Word docx file to text')
         print('    ./docx2text.py inputfile.docx outputfile.txt')
-        print('    optional switches: -header, -footer')
+        print('    optional switches: -header (-hdr), -footer (-ftr)')
+        print('                       -verbose (-v), -help')
         print(' ')
     
     # end of main
@@ -144,14 +147,14 @@ def getTheText(fileNameInput,newfile,fileType):
 
         # extract the text from the xml file
         paratextlist = getdocumenttext(document)
-
+        
         # if any text is found, make it unicode and write it to file
 
         if len(paratextlist) > 0 :
             # Make explicit unicode version
             newparatextlist = []
             for paratext in paratextlist:
-                newparatextlist.append(paratext.encode("utf-8"))
+                newparatextlist.append(paratext.encode("utf-8")+'\n')
 
             # Write the text to file
             newfile.write(''.join(newparatextlist)+'\n\n')
